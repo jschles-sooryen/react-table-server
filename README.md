@@ -4,8 +4,8 @@
 
 In the project directory, install dependencies:
 
-### npm install
+`npm install`
 
 Then, to start the server, run:
 
-### npm start
+`npm start`
