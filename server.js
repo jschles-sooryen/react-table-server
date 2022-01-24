@@ -61,6 +61,34 @@ app.post("/data", (req, res) => {
   res.json(newData);
 });
 
+app.patch("/data/:id", (req, res) => {
+  const data = JSON.parse(fs.readFileSync(__dirname + "/data.json", "utf-8"));
+  const contactId = req.params.id;
+  const updatedContact = req.body;
+  const newData = JSON.stringify(
+    data.map((contact) => {
+      if (contact.id === contactId) {
+        return updatedContact;
+      }
+      return contact;
+    })
+  );
+  fs.unlinkSync(__dirname + "/data.json");
+  fs.writeFileSync("data.json", newData);
+  res.json(newData);
+});
+
+app.delete("/data/:id", (req, res) => {
+  const data = JSON.parse(fs.readFileSync(__dirname + "/data.json", "utf-8"));
+  const contactId = req.params.id;
+  const newData = JSON.stringify(
+    data.filter((contact) => contact.id !== contactId)
+  );
+  fs.unlinkSync(__dirname + "/data.json");
+  fs.writeFileSync("data.json", newData);
+  res.json(newData);
+});
+
 app.listen(HTTP_PORT, () => {
   // Delete and regenerate data.json every time server starts
   if (fs.existsSync(__dirname + "/data.json", "utf-8")) {
