@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const fs = require("fs");
+const bodyParser = require("body-parser");
 
 const app = express();
 
@@ -43,6 +44,7 @@ const mockData = JSON.stringify([
 ]);
 
 app.use(cors());
+app.use(bodyParser.json());
 
 const HTTP_PORT = 8000;
 
