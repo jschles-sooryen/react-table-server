@@ -49,7 +49,7 @@ app.use(bodyParser.json());
 const HTTP_PORT = 8000;
 
 app.get("/data", (req, res) => {
-  const data = fs.readFileSync(__dirname + "/data.json", "utf-8");
+  const data = JSON.parse(fs.readFileSync(__dirname + "/data.json", "utf-8"));
   res.json(data);
 });
 
@@ -57,10 +57,9 @@ app.post("/data", (req, res) => {
   const data = JSON.parse(fs.readFileSync(__dirname + "/data.json", "utf-8"));
   const newContact = req.body;
   data.push(newContact);
-  const newData = JSON.stringify(data);
   fs.unlinkSync(__dirname + "/data.json");
-  fs.writeFileSync("data.json", newData);
-  res.json(newData);
+  fs.writeFileSync("data.json", JSON.stringify(data));
+  res.json(data);
 });
 
 app.patch("/data/:id", (req, res) => {
