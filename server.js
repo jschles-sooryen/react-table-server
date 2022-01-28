@@ -66,27 +66,23 @@ app.patch("/data/:id", (req, res) => {
   const data = JSON.parse(fs.readFileSync(__dirname + "/data.json", "utf-8"));
   const contactId = req.params.id;
   const updatedContact = req.body;
-  const newData = JSON.stringify(
-    data.map((contact) => {
-      if (contact.id === contactId) {
-        return updatedContact;
-      }
-      return contact;
-    })
-  );
+  const newData = data.map((contact) => {
+    if (contact.id.toString() === contactId) {
+      return updatedContact;
+    }
+    return contact;
+  });
   fs.unlinkSync(__dirname + "/data.json");
-  fs.writeFileSync("data.json", newData);
+  fs.writeFileSync("data.json", JSON.stringify(newData));
   res.json(newData);
 });
 
 app.delete("/data/:id", (req, res) => {
   const data = JSON.parse(fs.readFileSync(__dirname + "/data.json", "utf-8"));
   const contactId = req.params.id;
-  const newData = JSON.stringify(
-    data.filter((contact) => contact.id !== contactId)
-  );
+  const newData = data.filter((contact) => contact.id.toString() !== contactId);
   fs.unlinkSync(__dirname + "/data.json");
-  fs.writeFileSync("data.json", newData);
+  fs.writeFileSync("data.json", JSON.stringify(newData));
   res.json(newData);
 });
 
